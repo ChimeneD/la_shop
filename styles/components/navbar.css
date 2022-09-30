@@ -1,0 +1,7 @@
+.nav-container {
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background: var(--bg-var-color);
+}

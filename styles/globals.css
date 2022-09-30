@@ -1,26 +1,109 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400&family=Poppins&family=Raleway:wght@300;400&display=swap");
+
+html {
+  scroll-behavior: smooth;
 }
 
-a {
-  color: inherit;
+body {
+  font-family: "Raleway";
+  line-height: 1.7;
+}
+::-webkit-scrollbar {
+  width: 0.4em;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+}
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  box-sizing: border-box;
+  list-style: none;
   text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
+:root {
+  /* container width */
+  --container-width: 100%;
+  --transition-delay: 0.5s;
 }
 
+a:hover {
+  color: var(--accent-color);
+  cursor: pointer;
+  transition: var(--transition-delay);
+}
+.container {
+  width: var(--container-width);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+/* medium screens */
+@media screen and (max-width: 1024px) {
+  .container {
+    width: var(--container-width);
+  }
+}
+
+/* small screens */
+@media screen and (max-width: 600px) {
+  .container {
+    width: var(--container-width);
+  }
+}
+
+/* media query to change theme */
+/* light */
+@media (prefers-color-scheme: light) {
+  /* general colors */
+  :root {
+    --bg-color: #fdfaf6;
+    --bg-var-color: #f8f8f8;
+    --primary-color: #00c853;
+    --secondary-color: #91c788;
+    --tertiary-color: #e0e0e0;
+    --accent-color: #888888;
+    --error-color: red;
+    --success-color: red;
+    --info-color: red;
+    --transition-delay: 0.5s;
+  }
+}
+/* dark */
 @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+  /* general colors */
+  :root {
+    --bg-color: #f9f9f9;
+    --bg-var-color: #202020;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --primary-color: #b2ff59;
+    --secondary-color: #91c788;
+    --tertiary-color: #e0e0e0;
+    --accent-color: #888888;
+    --error-color: red;
+    --success-color: red;
+    --info-color: red;
+    --transition-delay: 0.5s;
   }
-  body {
-    color: white;
-    background: black;
-  }
+}
+
+[color-scheme="light"] {
+  --bg-color: #fdfaf6;
+  --bg-var-color: #f8f8f8;
+  --primary-color: #00c853;
+}
+
+[color-scheme="dark"] {
+  --bg-color: #f9f9f9;
+  --bg-var-color: #202020;
+  --primary-color: #b2ff59;
 }
