@@ -67,8 +67,8 @@ a:hover {
   /* general colors */
   :root {
     --bg-color: #fdfaf6;
-    --bg-var-color: #f8f8f8;
-    --primary-color: #00c853;
+    --bg-var-color: #cdc2ae;
+    --primary-color: #c2b8a3;
     --secondary-color: #91c788;
     --tertiary-color: #e0e0e0;
     --accent-color: #888888;
@@ -98,8 +98,8 @@ a:hover {
 
 [color-scheme="light"] {
   --bg-color: #fdfaf6;
-  --bg-var-color: #f8f8f8;
-  --primary-color: #00c853;
+  --bg-var-color: #cdc2ae;
+  --primary-color: #c2b8a3;
 }
 
 [color-scheme="dark"] {

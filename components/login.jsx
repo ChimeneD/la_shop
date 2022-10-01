@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import toast from "react-hot-toast";
+import { useLazyQuery } from "@apollo/client";
 import { Button, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import { LOGIN_USER } from "@graphql/queries";
+import { ContextAPI } from "@utils/context";
+import { useRouter } from "next/router";
 
 const Login = () => {
+  const { saveUser } = useContext(ContextAPI);
+  const router = useRouter();
+  const { redirect } = router.query;
   const {
     handleSubmit,
     control,
@@ -11,11 +18,25 @@ const Login = () => {
     formState: { errors },
     setValue
   } = useForm();
+  const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
+    onCompleted: (data) => {
+      saveUser(data.loginUser);
+      setValue("email", "");
+      setValue("password", "");
+      router.push(redirect || "/");
+      return;
+    },
+    onError: () => {
+      toast.error("Login Error");
+    }
+  });
 
   const signIn = ({ email, password }) => {
-    toast.success(email);
-    toast.success(password);
+    loginUser({
+      variables: { email: email, password: password }
+    });
   };
+  useEffect(() => {}, []);
   return (
     <form onSubmit={handleSubmit(signIn)}>
       <Controller
@@ -64,7 +85,13 @@ const Login = () => {
           />
         )}
       />
-      <Button fullWidth variant="contained" type="submit" color="primary">
+      <Button
+        fullWidth
+        variant="contained"
+        type="submit"
+        color="primary"
+        disabled={loading}
+      >
         SIGN IN
       </Button>
     </form>

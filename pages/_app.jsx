@@ -15,14 +15,15 @@ import "aos/dist/aos.css";
 // import 'swiper/css/pagination';
 // import 'swiper/css/scrollbar';
 // import 'swiper/css/effect-fade';
-// // //stylesheets for different pages
-// import '@styles/css/swiper-style.css';
-// import '@styles/css/main.css';
-// // import '@styles/css/login.css';
+
+// stylesheets for different pages
+import "@styles/pages/login-page.css";
+import "@styles/pages/admin-page.css";
 // import '@styles/css/home.css';
 // import '@styles/css/shop.css';
 // import '@styles/css/products.css';
-// // //stylesheets for components
+
+// stylesheets for components
 // import '@styles/css/product-card.css';
 import "@styles/components/navbar.css";
 // import '@styles/css/side-menu.css';
@@ -41,12 +42,33 @@ const MyApp = (props) => {
   useEffect(() => {
     AOS.init();
     AOS.refresh();
+    checkUser();
     loadTheme(getCurrentTheme());
     Cookies.get("darkMode") === "ON" ? setDarkMode(true) : setDarkMode(false);
   }, []);
 
   //states
   const [darkMode, setDarkMode] = useState(false);
+  const [user, setUser] = useState(null);
+  const timeout = 1000;
+  // function to check user login
+  const checkUser = () => {
+    let data = Cookies.get("user");
+    data !== undefined ? setUser(JSON.parse(data)) : setUser(null);
+  };
+  // function to update user info
+  const saveUser = (data) => {
+    Cookies.set("user", JSON.stringify(data));
+    setUser(data);
+  };
+  // function to clear user info
+  const signOut = () => {
+    Cookies.remove("user");
+    setUser(null);
+    setTimeout(function () {
+      window.location.reload();
+    }, timeout);
+  };
   //function to toggle darkmode
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -59,7 +81,10 @@ const MyApp = (props) => {
         <ContextAPI.Provider
           value={{
             darkMode: darkMode,
-            toggleDarkMode: toggleDarkMode
+            user: user,
+            saveUser: saveUser,
+            toggleDarkMode: toggleDarkMode,
+            signOut: signOut
           }}
         >
           <Component {...pageProps} />
