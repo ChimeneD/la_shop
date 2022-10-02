@@ -36,7 +36,10 @@ const MyApp = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const client = new ApolloClient({
     uri: `${process.env.BACKEND_URI}`,
-    cache: new InMemoryCache()
+    fetchOptions: {
+      mode: "no-cors",
+    },
+    cache: new InMemoryCache(),
   });
 
   useEffect(() => {
@@ -84,7 +87,7 @@ const MyApp = (props) => {
             user: user,
             saveUser: saveUser,
             toggleDarkMode: toggleDarkMode,
-            signOut: signOut
+            signOut: signOut,
           }}
         >
           <Component {...pageProps} />
