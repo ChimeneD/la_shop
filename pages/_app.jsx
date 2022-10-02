@@ -39,7 +39,7 @@ const MyApp = (props) => {
     fetchOptions: {
       mode: "no-cors",
     },
-    credentials: "include",
+    // credentials: "include",
     cache: new InMemoryCache(),
   });
 
