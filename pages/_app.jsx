@@ -36,10 +36,6 @@ const MyApp = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const client = new ApolloClient({
     uri: `${process.env.BACKEND_URI}`,
-    fetchOptions: {
-      mode: "no-cors",
-      credentials: "include",
-    },
     credentials: "include",
     cache: new InMemoryCache(),
   });
