@@ -27,7 +27,7 @@ const Login = () => {
       return;
     },
     onError: (error) => {
-      toast.error("Login Error: ", error.message);
+      toast.error("Login Error: ", error);
     },
   });
 
