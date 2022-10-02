@@ -1,0 +1,17 @@
+.card__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 350px;
+  border-radius: 0.5rem;
+  border: 2px dotted var(--primary-color);
+  padding: 0.3rem;
+}
+.card__container .card__image {
+  width: 150px;
+}
+.card__container .card__image img {
+  width: 100%;
+}

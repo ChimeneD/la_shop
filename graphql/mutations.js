@@ -23,6 +23,7 @@ export const ADD_PRODUCT = gql`
     $image: String!,
     $imageID: String!,
     $price: Float!,
+    $stock: Int!,
     $description: String!,
     $brand: String!,
     $category: String!,
@@ -36,6 +37,7 @@ export const ADD_PRODUCT = gql`
       image: $image,
       imageID: $imageID,
       price: $price,
+      stock: $stock,
       description: $description,
       brand: $brand,
       category: $category,
@@ -48,4 +50,15 @@ export const ADD_PRODUCT = gql`
       slug
     }
   }
+`;
+export const PLACE_ORDER = gql`
+mutation CreateOrder(
+  $user: String!
+) {
+  createOrder(
+    user: $user
+  ){
+    _id
+  }
+}
 `;

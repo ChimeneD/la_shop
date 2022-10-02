@@ -27,3 +27,24 @@ export const CATEGORIES = gql`
     }
   }
 `;
+export const PRODUCTS = gql`
+  query Products {
+    products {
+      _id
+      name
+      image
+      price
+      slug
+      description
+      stock
+      brand {
+        _id
+        name
+      }
+      category {
+        _id
+        name
+      }
+    }
+  }
+`;

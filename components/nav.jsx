@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
 import NextLink from "next/link";
-import { IconButton, Link } from "@mui/material";
+import { ContextAPI } from "@utils/context";
+import { Badge, IconButton, Link } from "@mui/material";
 import { HiOutlineShoppingBag, HiOutlineLogout } from "react-icons/hi";
 import { BsSuitHeart } from "react-icons/bs";
 import Cookies from "js-cookie";
-import { ContextAPI } from "@utils/context";
+import { useRouter } from "next/router";
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState("");
-  const { signOut } = useContext(ContextAPI);
+  const { signOut, cart } = useContext(ContextAPI);
+  const router = useRouter();
   useEffect(() => {
     const data = Cookies.get("user");
     if (data !== undefined) {
@@ -46,8 +48,10 @@ const NavBar = () => {
           </div>
         )}
         <div>
-          <IconButton size="small">
-            <HiOutlineShoppingBag />
+          <IconButton size="small" onClick={() => router.push("/cart")}>
+            <Badge badgeContent={`${cart.length}`}>
+              <HiOutlineShoppingBag />
+            </Badge>
           </IconButton>
           <IconButton size="small">
             <BsSuitHeart />

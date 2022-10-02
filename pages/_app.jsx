@@ -6,6 +6,7 @@ import AOS from "aos";
 import { CacheProvider } from "@emotion/react";
 import { ContextAPI } from "@utils/context";
 import { loadTheme, getCurrentTheme } from "@helpers/theme";
+
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import "@styles/globals.css";
 import "aos/dist/aos.css";
@@ -19,13 +20,14 @@ import "aos/dist/aos.css";
 // stylesheets for different pages
 import "@styles/pages/login-page.css";
 import "@styles/pages/admin-page.css";
-// import '@styles/css/home.css';
+import "@styles/pages/home-page.css";
 // import '@styles/css/shop.css';
 // import '@styles/css/products.css';
 
 // stylesheets for components
-// import '@styles/css/product-card.css';
+import "@styles/components/product-card.css";
 import "@styles/components/navbar.css";
+import toast from "react-hot-toast";
 // import '@styles/css/side-menu.css';
 // import '@styles/css/search-bar.css';
 // import '@styles/css/modal.css';
@@ -34,20 +36,24 @@ const clientSideEmotionCache = createEmotionCache();
 
 const MyApp = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
   const client = new ApolloClient({
+    // Provide required constructor fields
+    cache: new InMemoryCache(),
     uri: `${process.env.BACKEND_URI}`,
     fetchOptions: {
       mode: "no-cors",
-      credentials: "include",
+      // credentials: "include",
     },
-    // credentials: "include",
-    cache: new InMemoryCache(),
   });
 
   useEffect(() => {
     AOS.init();
     AOS.refresh();
     checkUser();
+    initializeCart();
+    initializeAddress();
+    initializePayment();
     loadTheme(getCurrentTheme());
     Cookies.get("darkMode") === "ON" ? setDarkMode(true) : setDarkMode(false);
   }, []);
@@ -55,7 +61,79 @@ const MyApp = (props) => {
   //states
   const [darkMode, setDarkMode] = useState(false);
   const [user, setUser] = useState(null);
+  const [cart, setCart] = useState([]);
+  const [address, setAddress] = useState({});
+  const [payment, setPayment] = useState("");
+  const [itemCount, setItemCount] = useState(0);
+  const [total, setTotal] = useState(0);
   const timeout = 1000;
+
+  // eslint-disable-next-line
+  Array.prototype.sum = function (prop) {
+    let total = 0;
+    for (let i = 0, _len = this.length; i < _len; i++) {
+      total += this[i][prop];
+    }
+    return total;
+  };
+  //Function to Remove and Element from Array
+  function arrayRemove(arr, value) {
+    return arr.filter(function (ele) {
+      return ele !== value;
+    });
+  }
+  // function to initialize cart
+  const initializeCart = () => {
+    const cartData = Cookies.get("cart");
+    if (cartData !== undefined) {
+      setCart(JSON.parse(cartData));
+    }
+  };
+  // function to initialize cart
+  const initializeAddress = () => {
+    const addressData = Cookies.get("address");
+    if (addressData !== undefined) {
+      setAddress(JSON.parse(addressData));
+    }
+  };
+  // function to initialize cart
+  const initializePayment = () => {
+    const paymentData = Cookies.get("paymentMethod");
+    if (paymentData !== undefined) {
+      setPayment(paymentData);
+    }
+  };
+  // function to add items to cart
+  const addToCart = (slug, products) => {
+    const data = products.find((product) => product.slug === slug);
+    if (data) {
+      const newCart = [...cart, { ...data, qty: 1, total: data.price }];
+      setCart(newCart);
+      Cookies.set("cart", JSON.stringify(newCart));
+      setItemCount(newCart.sum("qty"));
+      setTotal(newCart.sum("total"));
+    }
+  };
+  const removeFromCart = (slug) => {
+    const product = cart.find((item) => item.slug === slug);
+    //get the product from the cart and remove it
+    const tempCart = [...cart];
+    const cartIndex = tempCart.indexOf(product);
+
+    const removeProduct = tempCart[cartIndex];
+    const newCart = arrayRemove(tempCart, removeProduct);
+
+    Cookies.set("cart", JSON.stringify(newCart));
+    setCart(newCart);
+    setItemCount(newCart.sum("qty"));
+    setTotal(newCart.sum("total"));
+  };
+  const clearCart = () => {
+    setCart([]); //clear cart items
+    Cookies.remove("cartItems");
+    setItemCount(0);
+    setTotal(0);
+  };
   // function to check user login
   const checkUser = () => {
     let data = Cookies.get("user");
@@ -80,6 +158,33 @@ const MyApp = (props) => {
     Cookies.set("darkMode", !darkMode ? "ON" : "OFF");
     loadTheme(getCurrentTheme());
   };
+  // function to update quantity
+  const updateQuantity = (slug, quantity) => {
+    const product = cart.find((item) => item.slug === slug);
+    const tempCart = [...cart];
+    const cartIndex = tempCart.indexOf(product);
+
+    if (cartIndex !== -1) {
+      const product = tempCart[cartIndex];
+      product.qty = quantity;
+      product.total = product.qty * product.price;
+      const newCart = [...cart];
+      setCart(newCart);
+      Cookies.set("cart", JSON.stringify(newCart));
+      setItemCount(cart.sum("qty"));
+      setTotal(cart.sum("total"));
+    }
+  };
+  // function to save address
+  const saveAddress = (data) => {
+    setAddress(data);
+    Cookies.set("address", JSON.stringify(data));
+  };
+  // function to save payment
+  const savePayment = (data) => {
+    setPayment(data);
+    Cookies.set("paymentMethod", JSON.stringify(data));
+  };
   return (
     <CacheProvider value={emotionCache}>
       <ApolloProvider client={client}>
@@ -90,6 +195,17 @@ const MyApp = (props) => {
             saveUser: saveUser,
             toggleDarkMode: toggleDarkMode,
             signOut: signOut,
+            addToCart: addToCart,
+            cart: cart,
+            itemCount: itemCount,
+            total: total,
+            clearCart: clearCart,
+            address: address,
+            saveAddress: saveAddress,
+            payment: payment,
+            savePayment: savePayment,
+            removeFromCart: removeFromCart,
+            updateQuantity: updateQuantity,
           }}
         >
           <Component {...pageProps} />

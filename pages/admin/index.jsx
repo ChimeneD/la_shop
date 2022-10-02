@@ -142,25 +142,12 @@ const Admin = () => {
     // upload the feature image
     const formData = new FormData();
     formData.append(`file`, image[0]);
-    formData.append("upload_preset", "ouicestnous-products");
+    formData.append("upload_preset", "la-shop");
     const { data: upload } = await axios.post(
       `${process.env.CLOUDINARY_UPLOAD}`,
       formData,
     );
     if (upload) {
-      console.log({
-        name: data.name,
-        slug: slug,
-        image: upload.secure_url,
-        imageID: upload.public_id,
-        price: parseFloat(data.price),
-        description: data.description,
-        brand: data.brand,
-        category: data.category,
-        feature: feature,
-        featureImage: feature ? featureData.secure_url : "",
-        featureImageID: feature ? featureData.public_id : "",
-      });
       addProduct({
         variables: {
           name: data.name,
@@ -168,6 +155,7 @@ const Admin = () => {
           image: upload.secure_url,
           imageID: upload.public_id,
           price: parseFloat(data.price),
+          stock: parseInt(data.stock),
           description: data.description,
           brand: data.brand,
           category: data.category,
@@ -189,7 +177,7 @@ const Admin = () => {
         // upload the feature image
         const formData = new FormData();
         formData.append(`file`, featureImage[0]);
-        formData.append("upload_preset", "ouicestnous-products");
+        formData.append("upload_preset", "la-shop");
         const { data: upload } = await axios.post(
           `${process.env.CLOUDINARY_UPLOAD}`,
           formData,
@@ -396,6 +384,24 @@ const Admin = () => {
                       ),
                     }}
                     helperText={errors.price ? "Product price is required" : ""}
+                    {...field}
+                  />
+                )}
+              />
+              <Controller
+                name="stock"
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field }) => (
+                  <TextField
+                    id="stock"
+                    label="Product Stock"
+                    fullWidth
+                    type={`number`}
+                    error={Boolean(errors.stock)}
+                    helperText={errors.stock ? "Product stock is required" : ""}
                     {...field}
                   />
                 )}
