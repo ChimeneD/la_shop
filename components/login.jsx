@@ -16,7 +16,7 @@ const Login = () => {
     control,
     register,
     formState: { errors },
-    setValue
+    setValue,
   } = useForm();
   const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
     onCompleted: (data) => {
@@ -26,14 +26,14 @@ const Login = () => {
       router.push(redirect || "/");
       return;
     },
-    onError: () => {
-      toast.error("Login Error");
-    }
+    onError: (error) => {
+      toast.error("Login Error: ", error.message);
+    },
   });
 
   const signIn = ({ email, password }) => {
     loginUser({
-      variables: { email: email, password: password }
+      variables: { email: email, password: password },
     });
   };
   useEffect(() => {}, []);
@@ -45,7 +45,7 @@ const Login = () => {
         defaultValue=""
         rules={{
           required: true,
-          pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
+          pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
         }}
         render={({ field }) => (
           <TextField
@@ -69,7 +69,7 @@ const Login = () => {
         control={control}
         defaultValue=""
         rules={{
-          required: true
+          required: true,
         }}
         render={({ field }) => (
           <TextField
