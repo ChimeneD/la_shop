@@ -38,8 +38,9 @@ const MyApp = (props) => {
     uri: `${process.env.BACKEND_URI}`,
     fetchOptions: {
       mode: "no-cors",
+      credentials: "include",
     },
-    // credentials: "include",
+    credentials: "include",
     cache: new InMemoryCache(),
   });
 
