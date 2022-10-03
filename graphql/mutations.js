@@ -52,13 +52,48 @@ export const ADD_PRODUCT = gql`
   }
 `;
 export const PLACE_ORDER = gql`
-mutation CreateOrder(
-  $user: String!
-) {
-  createOrder(
-    user: $user
-  ){
-    _id
+  mutation CreateOrder(
+    $address: AddressInput!
+    $item: [ItemInput!]!
+    $name: String!
+    $paymentMethod: String!
+    $totalPrice: Float!
+    $user: String!
+  ) {
+    createOrder(
+      address: $address
+      item: $item
+      name: $name
+      paymentMethod: $paymentMethod
+      totalPrice: $totalPrice
+      user: $user
+    ) {
+      _id
+      items {
+        product {
+          _id
+        }
+      }
+    }
   }
-}
+`;
+export const CREATE_ACCOUNT = gql`
+  mutation CreateAccount(
+      $email: String!
+      $firstName: String!
+      $lastName: String!
+      $role: String
+      $password: String!
+  ){
+    createAccount(
+      email: $email
+      firstName: $firstName
+      lastName: $lastName
+      role: $role
+      password: $password
+    ){
+      _id
+      email
+    }
+  }
 `;

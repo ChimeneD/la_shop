@@ -21,20 +21,81 @@ import {
 import { ContextAPI } from "@utils/context";
 import { useMutation } from "@apollo/client";
 import { PLACE_ORDER } from "@graphql/mutations";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const ConfirmOrder = () => {
-  const { address, payment, cart, total, itemCount } = useContext(ContextAPI);
+  const router = useRouter();
+  const {
+    address,
+    payment,
+    cart,
+    total,
+    itemCount,
+    clearCart,
+    clearAddress,
+    timeout,
+  } = useContext(ContextAPI);
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
   const shippingPrice = total > 200 ? 0 : 250;
   const taxPrice = round2(total * 0.15);
-  const totalPrice = round2(total + shippingPrice + taxPrice);
+  const totalPrice = round2(parseFloat(total) + shippingPrice + taxPrice);
   const stepBack = () => {
     router.push("/payment");
   };
   const [createOrder, { loading }] = useMutation(PLACE_ORDER, {
-    onCompleted: (data) => {},
+    onCompleted: (data) => {
+      toast.success("Order Confirmed!");
+      clearCart();
+      clearAddress();
+      setTimeout(() => {
+        router.push(`/order/${data.createOrder._id}`);
+      }, timeout);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
   });
-  const handleOrder = () => {};
+  const handleOrder = () => {
+    const data = Cookies.get("user");
+    let items = [];
+    cart.map((item) => {
+      let theItems = {
+        product: item._id,
+        quantity: item.qty,
+        total: item.total,
+      };
+      items.push(theItems);
+    });
+
+    if (data !== undefined) {
+      const user = JSON.parse(data);
+      console.log(items);
+      createOrder({
+        variables: {
+          user: user._id,
+          totalPrice: totalPrice,
+          address: {
+            street: address.address,
+            city: address.city,
+            postalCode: address.postalCode,
+          },
+          name: address.name,
+          paymentMethod: payment,
+          item: items.length > 0 && items,
+        },
+      });
+    }
+  };
+  useEffect(() => {
+    let user = null;
+    const data = Cookies.get("user");
+    data !== undefined ? (user = JSON.parse(data)) : (user = null);
+    user === null
+      ? router.push("/authentication?redirect=/confirm-order")
+      : !user.token && router.push("/authentication?redirect=/confirm-order");
+  }, []);
   return (
     <Layout title="Confirm Order">
       <CheckoutWizard activeStep={3} />
@@ -50,10 +111,12 @@ const ConfirmOrder = () => {
                   Shipping Address
                 </Typography>
               </ListItem>
-              <ListItem>
-                {address.name}, {address.address}, {address.city},{" "}
-                {address.postalCode}.{" "}
-              </ListItem>
+              {address && (
+                <ListItem>
+                  {address.name}, {address.address}, {address.city},{" "}
+                  {address.postalCode}.{" "}
+                </ListItem>
+              )}
             </List>
           </Card>
           <Card className="card">
@@ -196,7 +259,7 @@ const ConfirmOrder = () => {
                   color="primary"
                   variant="contained"
                   fullWidth
-                  onClick={handleOrder}
+                  onClick={() => handleOrder()}
                   disabled={loading}
                 >
                   Place Order

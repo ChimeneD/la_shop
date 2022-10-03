@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState("");
-  const { signOut, cart } = useContext(ContextAPI);
+  const { signOut, cart, itemCount } = useContext(ContextAPI);
   const router = useRouter();
   useEffect(() => {
     const data = Cookies.get("user");
@@ -49,7 +49,7 @@ const NavBar = () => {
         )}
         <div>
           <IconButton size="small" onClick={() => router.push("/cart")}>
-            <Badge badgeContent={`${cart.length}`}>
+            <Badge badgeContent={`${itemCount}`}>
               <HiOutlineShoppingBag />
             </Badge>
           </IconButton>

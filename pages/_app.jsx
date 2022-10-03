@@ -54,6 +54,7 @@ const MyApp = (props) => {
     initializeCart();
     initializeAddress();
     initializePayment();
+    initializeQuantity();
     loadTheme(getCurrentTheme());
     Cookies.get("darkMode") === "ON" ? setDarkMode(true) : setDarkMode(false);
   }, []);
@@ -103,13 +104,25 @@ const MyApp = (props) => {
       setPayment(paymentData);
     }
   };
+  // function to initialize total and quantity
+  const initializeQuantity = () => {
+    const qty = Cookies.get("quantity");
+    const total = Cookies.get("total");
+    if (qty !== undefined && total !== undefined) {
+      setItemCount(qty);
+      setTotal(total);
+    }
+  };
   // function to add items to cart
   const addToCart = (slug, products) => {
     const data = products.find((product) => product.slug === slug);
     if (data) {
       const newCart = [...cart, { ...data, qty: 1, total: data.price }];
       setCart(newCart);
+      console.log(newCart);
       Cookies.set("cart", JSON.stringify(newCart));
+      Cookies.set("quantity", newCart.sum("qty"));
+      Cookies.set("total", newCart.sum("total"));
       setItemCount(newCart.sum("qty"));
       setTotal(newCart.sum("total"));
     }
@@ -124,15 +137,25 @@ const MyApp = (props) => {
     const newCart = arrayRemove(tempCart, removeProduct);
 
     Cookies.set("cart", JSON.stringify(newCart));
+    Cookies.set("quantity", newCart.sum("qty"));
+    Cookies.set("total", newCart.sum("total"));
     setCart(newCart);
     setItemCount(newCart.sum("qty"));
     setTotal(newCart.sum("total"));
   };
   const clearCart = () => {
     setCart([]); //clear cart items
-    Cookies.remove("cartItems");
+    Cookies.remove("cart");
+    Cookies.remove("total");
+    Cookies.remove("qty");
     setItemCount(0);
     setTotal(0);
+  };
+  const clearAddress = () => {
+    setAddress(null);
+    setPayment("");
+    Cookies.remove("address");
+    Cookies.remove("paymentMethod");
   };
   // function to check user login
   const checkUser = () => {
@@ -169,10 +192,12 @@ const MyApp = (props) => {
       product.qty = quantity;
       product.total = product.qty * product.price;
       const newCart = [...cart];
-      setCart(newCart);
       Cookies.set("cart", JSON.stringify(newCart));
-      setItemCount(cart.sum("qty"));
-      setTotal(cart.sum("total"));
+      Cookies.set("quantity", newCart.sum("qty"));
+      Cookies.set("total", newCart.sum("total"));
+      setCart(newCart);
+      setItemCount(newCart.sum("qty"));
+      setTotal(newCart.sum("total"));
     }
   };
   // function to save address
@@ -206,6 +231,7 @@ const MyApp = (props) => {
             savePayment: savePayment,
             removeFromCart: removeFromCart,
             updateQuantity: updateQuantity,
+            clearAddress: clearAddress,
           }}
         >
           <Component {...pageProps} />
