@@ -25,14 +25,6 @@ const Profile = () => {
   }, []);
 
   const router = useRouter();
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    setValue,
-  } = useForm();
-
-  const submitUpdate = () => {};
   return (
     <Layout title="Profile">
       <Grid container spacing={1}>
@@ -62,7 +54,8 @@ const Profile = () => {
                 </Typography>
               </ListItem>
               <ListItem>
-                <form className="form" onSubmit={handleSubmit(submitUpdate)}>
+                Display Info of The User Here
+                {/* <form className="form" onSubmit={handleSubmit(submitUpdate)}>
                   <List>
                     <ListItem>
                       <Controller
@@ -195,7 +188,7 @@ const Profile = () => {
                       </Button>
                     </ListItem>
                   </List>
-                </form>
+                </form> */}
               </ListItem>
             </List>
           </Card>

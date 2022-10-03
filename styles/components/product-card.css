@@ -10,6 +10,15 @@
   padding: 0.3rem;
   position: relative;
 }
+.card__container:hover {
+  cursor: pointer;
+  transition: 1500ms;
+  background: var(--accent-color);
+}
+.card__container:hover img {
+  transition: 800ms;
+  scale: 1.2;
+}
 .card__container .card__image {
   width: 150px;
 }

@@ -12,13 +12,11 @@ const ProductCard = ({ product, products }) => {
   const [productInCart, setProductInCart] = useState(false);
   useEffect(() => {
     let findProduct = cart.find((item) => item.slug === slug);
-    console.log("product => ", findProduct);
     if (findProduct !== undefined) {
       setProductInCart(true);
     } else {
       setProductInCart(false);
     }
-    console.log("in cart => ", productInCart);
     //eslint-disable-next-line
   }, [productInCart, cart]);
   return (

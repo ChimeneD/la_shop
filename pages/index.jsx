@@ -21,7 +21,7 @@ export default function Home() {
           ? productData.map((product) => {
               return (
                 <ProductCard
-                  key={product._id}
+                  key={product.slug}
                   product={product}
                   products={productData}
                 />

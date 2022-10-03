@@ -48,6 +48,27 @@ export const PRODUCTS = gql`
     }
   }
 `;
+export const GET_PRODUCT = gql`
+  query GetProduct($slug: String!) {
+    getProduct(slug: $slug) {
+      _id
+      name
+      image
+      price
+      slug
+      description
+      stock
+      brand {
+        _id
+        name
+      }
+      category {
+        _id
+        name
+      }
+    }
+  }
+`;
 export const ORDER = gql`
   query Order($orderId: String!) {
     order(id: $orderId) {
