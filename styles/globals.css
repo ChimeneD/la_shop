@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400&family=Poppins&family=Raleway:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400&family=Poppins&family=Raleway:wght@300;400&display=swap&family=Passions+Conflict&display=swap");
 
 html {
   scroll-behavior: smooth;
@@ -45,6 +45,7 @@ a:hover {
   justify-content: center;
   align-items: center;
   margin: auto;
+  height: 100%;
 }
 
 /* medium screens */
@@ -69,7 +70,7 @@ a:hover {
     --bg-color: #fdfaf6;
     --bg-var-color: #cdc2ae;
     --primary-color: #c2b8a3;
-    --secondary-color: #91c788;
+    --secondary-color: #fef7dc;
     --tertiary-color: #e0e0e0;
     --accent-color: #888888;
     --error-color: red;
@@ -82,7 +83,7 @@ a:hover {
 @media (prefers-color-scheme: dark) {
   /* general colors */
   :root {
-    --bg-color: #f9f9f9;
+    --bg-color: #f7f7f9;
     --bg-var-color: #202020;
     --shadow-color: rgba(0, 0, 0, 0.1);
     --primary-color: #b2ff59;
@@ -97,9 +98,10 @@ a:hover {
 }
 
 [color-scheme="light"] {
-  --bg-color: #fdfaf6;
-  --bg-var-color: #cdc2ae;
-  --primary-color: #c2b8a3;
+  --bg-color: #f7f7f9;
+  --bg-var-color: #323e45;
+  --primary-color: #8ba88e;
+  --secondary-color: #ccd2c6;
 }
 
 [color-scheme="dark"] {

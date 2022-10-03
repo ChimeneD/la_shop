@@ -40,9 +40,10 @@ const OrderHistory = () => {
     let user = null;
     const data = Cookies.get("user");
     data !== undefined ? (user = JSON.parse(data)) : (user = null);
-    user === null
-      ? router.push("/authentication?redirect=/order-history")
-      : !user.token && router.push("/authentication?redirect=/order-history");
+    if (user === null) {
+      return router.push("/authentication?redirect=/order-history");
+    }
+    !user.token && router.push("/authentication?redirect=/order-history");
 
     fetchOrders({ variables: { userId: user._id } });
   }, []);

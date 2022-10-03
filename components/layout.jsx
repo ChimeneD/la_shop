@@ -4,7 +4,7 @@ import NavBar from "./nav";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { lightTheme, darkTheme } from "@styles/theme";
 import { ContextAPI } from "@utils/context";
-import {Toaster} from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 const Layout = ({ children, title, description }) => {
   const { darkMode } = useContext(ContextAPI);
@@ -16,8 +16,8 @@ const Layout = ({ children, title, description }) => {
         {description && <meta name="description" content={description}></meta>}
       </Head>
       <NavBar />
-      <Toaster/>
-      <main>{children}</main>
+      <Toaster />
+      <main className="container">{children}</main>
     </ThemeProvider>
   );
 };

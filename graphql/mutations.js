@@ -97,3 +97,11 @@ export const CREATE_ACCOUNT = gql`
     }
   }
 `;
+export const UPDATE_ORDER = gql`
+mutation UpdateOrder($updateOrderId: String, $paid: Boolean, $delivered: Boolean) {
+  updateOrder(id: $updateOrderId, paid: $paid, delivered: $delivered) {
+    _id
+  }
+}
+
+`;

@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Button, Typography } from "@mui/material";
+import { IconButton, Typography, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
 import { ContextAPI } from "@utils/context";
+import { MdAddShoppingCart, MdOutlineRemoveShoppingCart } from "react-icons/md";
 
 const ProductCard = ({ product, products }) => {
   const { addToCart, cart, removeFromCart } = useContext(ContextAPI);
@@ -28,26 +29,41 @@ const ProductCard = ({ product, products }) => {
       >
         <img src={image} alt={name} />
       </section>
-      <Typography>{name}</Typography>
-      <Typography>R {price}</Typography>
+      <div
+        style={{
+          position: "absolute",
+          bottom: "10px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography>{name}</Typography>
+        <Typography>R {price}</Typography>
+      </div>
       {!productInCart ? (
-        <Button
-          color="primary"
-          variant="contained"
-          fullWidth
-          onClick={() => addToCart(slug, products)}
-        >
-          Add to Cart
-        </Button>
+        <Tooltip title="Add To Cart">
+          <IconButton
+            color="primary"
+            fullWidth
+            onClick={() => addToCart(slug, products)}
+            style={{ position: "absolute", right: "1px", bottom: "10px" }}
+          >
+            <MdAddShoppingCart />
+          </IconButton>
+        </Tooltip>
       ) : (
-        <Button
-          color="secondary"
-          variant="contained"
-          fullWidth
-          onClick={() => removeFromCart(slug, products)}
-        >
-          Remove from Cart
-        </Button>
+        <Tooltip title="Remove From Cart">
+          <IconButton
+            color="secondary"
+            fullWidth
+            onClick={() => removeFromCart(slug, products)}
+            style={{ position: "absolute", right: "1px", bottom: "10px" }}
+          >
+            <MdOutlineRemoveShoppingCart />
+          </IconButton>
+        </Tooltip>
       )}
     </div>
   );

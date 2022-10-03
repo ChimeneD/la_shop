@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useLazyQuery } from "@apollo/client";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { LOGIN_USER } from "@graphql/queries";
 import { ContextAPI } from "@utils/context";
@@ -39,6 +39,7 @@ const Login = () => {
   useEffect(() => {}, []);
   return (
     <form onSubmit={handleSubmit(signIn)}>
+      <Typography variant="h2">Login Account</Typography>
       <Controller
         name="email"
         control={control}

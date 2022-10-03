@@ -24,7 +24,30 @@ const NavBar = () => {
   }, []);
   return (
     <nav className="nav-container">
-      <img alt="logo" src="" />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <img
+          alt="logo"
+          src="https://res.cloudinary.com/danny-cloud/image/upload/v1664811625/la-shop/g4nbsjblrga0uqebkmlf.png"
+          style={{ width: "50px" }}
+        />
+        <p
+          style={{
+            fontFamily: "Passions Conflict",
+            fontSize: "40px",
+            color: "var(--secondary-color)",
+            marginLeft: "0.1rem",
+            marginTop: "0.5rem",
+          }}
+        >
+          La Shop
+        </p>
+      </div>
       <div className="space"></div>
       <article>
         <NextLink passHref href="/">
@@ -42,18 +65,22 @@ const NavBar = () => {
             >
               <Link>{user.email}</Link>
             </NextLink>
-            <IconButton size="small" color="primary" onClick={signOut}>
+            <IconButton size="small" color="secondary" onClick={signOut}>
               <HiOutlineLogout />
             </IconButton>
           </div>
         )}
         <div>
-          <IconButton size="small" onClick={() => router.push("/cart")}>
+          <IconButton
+            size="small"
+            onClick={() => router.push("/cart")}
+            color="secondary"
+          >
             <Badge badgeContent={`${itemCount}`}>
               <HiOutlineShoppingBag />
             </Badge>
           </IconButton>
-          <IconButton size="small">
+          <IconButton size="small" color="secondary">
             <BsSuitHeart />
           </IconButton>
         </div>

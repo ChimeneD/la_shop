@@ -87,8 +87,6 @@ const Admin = () => {
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [feature, setFeature] = useState(false);
-  const [featureImage, setFeatureImage] = useState([]);
 
   const router = useRouter();
   useEffect(() => {
@@ -133,12 +131,7 @@ const Admin = () => {
     setImage(fileArray);
     setSelectedImage(URL.createObjectURL(event.target.files[0]));
   };
-  const handleFeature = (e) => {
-    // toast.success(`${e.target.checked}`);
-    setValue(`feature`, e.target.checked);
-    setFeature(e.target.checked);
-  };
-  const saveTheProduct = async (data, featureData) => {
+  const saveTheProduct = async (data) => {
     // upload the feature image
     const formData = new FormData();
     formData.append(`file`, image[0]);
@@ -159,42 +152,12 @@ const Admin = () => {
           description: data.description,
           brand: data.brand,
           category: data.category,
-          feature: feature,
-          featureImage: feature ? featureData.secure_url : "",
-          featureImageID: feature ? featureData.public_id : "",
         },
       });
     }
   };
   const addProduct_ = async (data) => {
-    // check if feature is checked
-    if (feature) {
-      // check for the feature image
-      if (featureImage.length <= 0) {
-        return toast.error(`*Feature Image not uploaded`);
-      }
-      try {
-        // upload the feature image
-        const formData = new FormData();
-        formData.append(`file`, featureImage[0]);
-        formData.append("upload_preset", "la-shop");
-        const { data: upload } = await axios.post(
-          `${process.env.CLOUDINARY_UPLOAD}`,
-          formData,
-        );
-        // check if upload is complete
-        if (upload) {
-          saveTheProduct(data, upload);
-        }
-      } catch (error) {
-        toast.error(error.message);
-      }
-    } else {
-      saveTheProduct(data);
-    }
-    // addProduct({
-    //   variables: { slug: slug, name: name },
-    // });
+    saveTheProduct(data);
   };
   const addBrand_ = ({ name }) => {
     addBrand({
@@ -406,44 +369,6 @@ const Admin = () => {
                   />
                 )}
               />
-              <FormControlLabel
-                // value='end'
-                control={
-                  <Controller
-                    name="feature"
-                    control={control}
-                    render={({ field }) => (
-                      <Checkbox
-                        {...field}
-                        color="primary"
-                        onChange={handleFeature}
-                      />
-                    )}
-                  />
-                }
-                label="Feature ?"
-                labelPlacement="end"
-              />
-              {feature ? (
-                <section className={`photo__section`}>
-                  <div className={`photo__container`}>
-                    <img src={selectedImage} alt="image icon" />
-                  </div>
-                  <div style={{ margin: "auto" }}>
-                    <IconButton component="label">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        hidden
-                        onChange={handleFileSelect}
-                      />
-                      <MdOutlinePhotoCameraBack />
-                    </IconButton>
-                  </div>
-                </section>
-              ) : (
-                ""
-              )}
               <Button
                 type="submit"
                 fullWidth

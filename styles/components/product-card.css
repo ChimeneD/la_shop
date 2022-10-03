@@ -8,6 +8,7 @@
   border-radius: 0.5rem;
   border: 2px dotted var(--primary-color);
   padding: 0.3rem;
+  position: relative;
 }
 .card__container .card__image {
   width: 150px;

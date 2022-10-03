@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useMutation } from "@apollo/client";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { CREATE_ACCOUNT } from "@graphql/mutations";
 import { ContextAPI } from "@utils/context";
@@ -45,6 +45,7 @@ const Register = () => {
   useEffect(() => {}, []);
   return (
     <form onSubmit={handleSubmit(signUp)}>
+      <Typography variant="h2">Create Account</Typography>
       <Controller
         name="email"
         control={control}
@@ -70,49 +71,47 @@ const Register = () => {
           />
         )}
       />
-      <div>
-        <Controller
-          name="firstName"
-          control={control}
-          defaultValue=""
-          rules={{
-            required: true,
-          }}
-          render={({ field }) => (
-            <TextField
-              id="firstName"
-              label="First name"
-              fullWidth
-              error={Boolean(errors.firstName)}
-              helperText={
-                errors.firstName ? "First name is required" : "e.g. Julia"
-              }
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          name="lastName"
-          control={control}
-          defaultValue=""
-          rules={{
-            required: true,
-          }}
-          render={({ field }) => (
-            <TextField
-              id="lastName"
-              label="Last name"
-              type="lastName"
-              fullWidth
-              error={Boolean(errors.lastName)}
-              helperText={
-                errors.lastName ? "Last name is required" : "e.g. Roberts"
-              }
-              {...field}
-            />
-          )}
-        />
-      </div>
+      <Controller
+        name="firstName"
+        control={control}
+        defaultValue=""
+        rules={{
+          required: true,
+        }}
+        render={({ field }) => (
+          <TextField
+            id="firstName"
+            label="First name"
+            fullWidth
+            error={Boolean(errors.firstName)}
+            helperText={
+              errors.firstName ? "First name is required" : "e.g. Julia"
+            }
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        name="lastName"
+        control={control}
+        defaultValue=""
+        rules={{
+          required: true,
+        }}
+        render={({ field }) => (
+          <TextField
+            id="lastName"
+            label="Last name"
+            type="lastName"
+            fullWidth
+            error={Boolean(errors.lastName)}
+            helperText={
+              errors.lastName ? "Last name is required" : "e.g. Roberts"
+            }
+            {...field}
+          />
+        )}
+      />
       <Controller
         name="password"
         control={control}

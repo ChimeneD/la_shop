@@ -138,3 +138,48 @@ export const ORDERS = gql`
     }
   }
 `;
+export const ALL_ORDERS = gql`
+  query AllOrders {
+    allOrders {
+      _id
+      items {
+        product {
+          _id
+          image
+          name
+          slug
+          price
+          stock
+          rating
+          description
+          category {
+            _id
+            name
+          }
+          brand {
+            _id
+            name
+          }
+        }
+        quantity
+        total
+      }
+      address {
+        street
+        city
+        postalCode
+      }
+      user {
+        _id
+        email
+        firstName
+        lastName
+      }
+      name
+      totalPrice
+      paid
+      isDelivered
+      paymentMethod
+    }
+  }
+`;
