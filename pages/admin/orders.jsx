@@ -71,7 +71,7 @@ const Orders = () => {
 
   const markPaid = (id) => {
     updateOrder({
-      variables: { updateOrderId: id, paid: true, delivered: order.delivered },
+      variables: { updateOrderId: id, paid: true, delivered: false },
     });
   };
   const markDelivered = (id) => {
