@@ -1,10 +1,22 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
 
-First, run the development server:
+  - [Frontend Setup](#React(HMTL,CSS,Javascript)
+  - [Backend Setup](#Nodejs)
+  - [Homepage]
+  - [Products]
+  - [Layouts]
+  - [Product Details]
+  - [Cart Logic]
+  - [Payment Logic](#Payment Gateway)
+  - [Success page]
+  - [Deployment](Netlify,Vercel)
 
-```bash
+First make sure to run the following commands in order to use this project locally
+
+# Enure that you have Nodejs intalled in your machine
+
+npm install
 npm run dev
 # or
 yarn dev
